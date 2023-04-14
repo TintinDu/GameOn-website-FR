@@ -7,6 +7,7 @@ function editNav() {
   }
 }
 
+// function for check all validations
 function validateEachInput(inputSelector) {
   const input = document.querySelector(inputSelector);
   const nameRegex = new RegExp("[a-zA-ZÀ-ÖØ-öø-ÿ-]{2,15}");
@@ -58,7 +59,7 @@ function validateEachInput(inputSelector) {
     if (!typeof input.value === Number) {
       setCustomValidity("Uniquement les nombres sont acceptés, arrête de jouer avec l'inspecteur petit malin !")
     } else if (!input.value >= 0 || !input.value <= 99) {
-      setCustomValidity("Vous pouvez uniquement renseigné un nombre entre 0 et 99.")
+      setCustomValidity("Vous pouvez uniquement renseigner un nombre entre 0 et 99.")
     } else {
       input.setCustomValidity("");
     }
@@ -129,12 +130,12 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
-// validation
-firstName.addEventListener("change", validateEachInput("first"))
-lastName.addEventListener("change", validateEachInput("last"))
-email.addEventListener("change", validateEachInput("email"))
-birthdate.addEventListener("change", validateEachInput("birthdate"))
-quantity.addEventListener("change", validateEachInput("quantity"))
+// validations
+firstName.addEventListener("change", validateEachInput("#first"))
+lastName.addEventListener("change", validateEachInput("#last"))
+email.addEventListener("change", validateEachInput("#email"))
+birthdate.addEventListener("change", validateEachInput("#birthdate"))
+quantity.addEventListener("change", validateEachInput("#quantity"))
 locationCity.addEventListener("change", validateEachInput("input[name='location']:checked"))
 
 // launch subscription event
