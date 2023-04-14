@@ -18,6 +18,10 @@ const parentQuantity = document.querySelector(".parentQuantity")
 const parentLocation = document.querySelector(".parentLocation")
 const parentConditions = document.querySelector(".parentConditions")
 
+// create regex for validations
+const nameRegex = new RegExp("[a-zA-ZÀ-ÖØ-öø-ÿ-]{2,15}");
+const emailRegex = new RegExp("[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,13}");
+
 // create validations elements
 const validationFirstName = document.createElement("p")
 validationFirstName.innerText = "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
@@ -63,42 +67,76 @@ function editNav() {
   }
 }
 
-function checkEachInputBeforeSubmit(input) {
-  const nameRegex = new RegExp("[a-zA-ZÀ-ÖØ-öø-ÿ-]{2,15}");
-  const emailRegex = new RegExp("[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,13}");
+function isFirstNameValid(firstName) {
+  if (!firstName || !nameRegex.test(firstName)) {
+    showValidationMessage(validationFirstName);
+  } else {
+    hideValidationMessage(validationFirstName)
+  }
+}
+
+function isLastNameValid(lastName) {
+  if (!lastName || !nameRegex.test(lastName)) {
+    showValidationMessage(validationLastName);
+  } else {
+    hideValidationMessage(validationLastName)
+  }
+}
+
+function isEmailValid(email) {
+  if (!email || !emailRegex.test(email)) {
+    showValidationMessage(validationEmail);
+  } else {
+    hideValidationMessage(validationEmail);
+  }
+}
+
+function isBirthdateValid(birthdate) {
+  if (!birthdate) {
+    showValidationMessage(validationBirthdate);
+  }
+  else {
+    hideValidationMessage(validationBirthdate);
+  }
+}
+
+function isQuantityValid(quantity) {
+  if ((quantity !== 0) && (quantity > 99)) {
+    showValidationMessage(validationQuantity);
+  }
+  else {
+    hideValidationMessage(validationQuantity);
+  }
+}
+
+function isLocationValid(location) {
+  if (!location) {
+    showValidationMessage(validationLocation)
+  } else {
+    hideValidationMessage(validationLocation)
+  }
+}
+
+function AreConditionsAccepted(accepted) {
+  if (!accepted) {
+    showValidationMessage(validationConditions)
+  } else {
+    hideValidationMessage(validationConditions)
+  }
+}
+
+function checkEachInputOnChange(input) {
 
   if (input.id === "first") {
-    if (!input.value || !nameRegex.test(input.value)) {
-      showValidationMessage(validationFirstName);
-    } else {
-      hideValidationMessage(validationFirstName)
-    }
+    isFirstNameValid(input.value)
   } else if (input.id === "last") {
-    if (!input.value || !nameRegex.test(input.value)) {
-      showValidationMessage(validationLastName);
-    } else {
-      hideValidationMessage(validationLastName)
-    }
+    isLastNameValid(input.value)
   } else if (input.id === "email") {
-    if (!input.value || !emailRegex.test(input.value)) {
-      showValidationMessage(validationEmail);
-    } else {
-      hideValidationMessage(validationEmail);
-    }
+    isEmailValid(input.value)
   } else if (input.id === "birthdate") {
-    if (!input.value) {
-      showValidationMessage(validationBirthdate);
-    }
-    else {
-      hideValidationMessage(validationBirthdate);
-    }
+    isBirthdateValid(input.value)
   } else if (input.id === "quantity") {
-    if ((input.value !== 0) && (input.value > 99)) {
-      showValidationMessage(validationQuantity);
-    }
-    else {
-      hideValidationMessage(validationQuantity);
-    }
+    isQuantityValid(input.value)
   }
 
 }
@@ -109,7 +147,7 @@ function validateOnChange(inputSelector) {
 
   input.addEventListener("change", (event) => {
     event.preventDefault();
-    checkEachInputBeforeSubmit(input)
+    checkEachInputOnChange(input)
   })
 }
 
@@ -117,8 +155,20 @@ function validateOnChange(inputSelector) {
 // validation on submit
 function validateOnSubmit(event) {
 
-  console.log(!(event.target.querySelector('input[type="radio"]').checked))
-  console.log(!(event.target.querySelector('#conditions').checked))
+  const formObject = {};
+  const formData = new FormData(form);
+  for (let key of formData.keys()) {
+    formObject[key] = formData.get(key);
+  }
+  console.log({ formObject })
+
+  isFirstNameValid(formObject.first)
+  isLastNameValid(formObject.last)
+  isEmailValid(formObject.email)
+  isBirthdateValid(formObject.birthdate)
+  isQuantityValid(formObject.quantity)
+  isLocationValid(formObject.location)
+  AreConditionsAccepted(formObject.conditions)
 
   if (!(event.target.querySelector('input[type="radio"]').checked)) {
     showValidationMessage(validationLocation);
@@ -132,19 +182,12 @@ function validateOnSubmit(event) {
   }
 }
 
-
 // function for suscribe form
 function sendSubscription() {
   const subscribeForm = document.querySelector("#reserveForm")
   subscribeForm.addEventListener("submit", (event) => {
     event.preventDefault();
     validateOnSubmit(event)
-
-    // const obj = {};
-    // const formData = new FormData(form);
-    // for (let key of formData.keys()) {
-    //   obj[key] = formData.get(key);
-    // }
 
     // Creation of subscription object
     const subscription = {
