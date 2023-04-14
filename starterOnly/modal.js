@@ -52,9 +52,11 @@ validationConditions.innerText = "Vous devez vérifier que vous acceptez les ter
 parentConditions.appendChild(validationConditions);
 
 function showValidationMessage(validationElement) {
+  validationElement.className = "formData__validation"
   validationElement.style.display = "block"
 }
 function hideValidationMessage(validationElement) {
+  validationElement.className = ""
   validationElement.style.display = "none"
 }
 
