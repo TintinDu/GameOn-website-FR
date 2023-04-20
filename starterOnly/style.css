@@ -144,6 +144,13 @@ main {
   min-height: 77vh;
 }
 
+.modal-body--thanks {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
 label {
   font-family: var(--font-default);
   font-size: 17px;
@@ -313,9 +320,12 @@ input[data-error]::after {
   margin: 0 auto;
 }
 
-.flex-end {
-  align-self: flex-end;
+.thanksMessage {
+  font-size: 2em;
+  text-align: center;
+  margin: auto;
 }
+
 /* custom select styles */
 .custom-select {
   position: relative;
