@@ -58,22 +58,30 @@ validationConditions.innerText = "Vous devez vérifier que vous acceptez les ter
 parentConditions.appendChild(validationConditions);
 
 // create thanks validation modal
+const thanksMessage = document.createElement("p")
+thanksMessage.innerText = "Merci pour votre inscription"
+thanksMessage.className = "thanksMessage"
+thanksMessage.style.display = "none"
+modalBody.appendChild(thanksMessage);
+
 const closeButton = document.createElement("button")
 closeButton.innerText = "Fermer"
-closeButton.className = "btn-submit flex-end"
+closeButton.className = "btn-submit"
 closeButton.style.display = "none"
 modalBody.appendChild(closeButton);
 
 function showConfirmationMessage() {
-  modalBody.style.display = "flex"
+  modalBody.className += " modal-body--thanks"
   form.style.display = "none"
   closeButton.style.display = "block"
+  thanksMessage.style.display = "block"
 }
 
 function hideConfirmationMessage() {
-  modalBody.style.display = "block"
-  closeButton.style.display = "none"
+  modalBody.className = "modal-body"
   form.style.display = "block"
+  closeButton.style.display = "none"
+  thanksMessage.style.display = "none"
 }
 
 // open dropdown
