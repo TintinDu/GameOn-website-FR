@@ -1,4 +1,5 @@
 // DOM Elements
+const modalBody = document.querySelector(".modal-body");
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const modalClose = document.querySelectorAll(".close");
@@ -11,10 +12,15 @@ const birthdate = document.querySelector("#birthdate");
 const quantity = document.querySelector("#quantity");
 const submitBtn = document.querySelector(".btn-submit")
 const parentFirst = document.querySelector(".parentFirst")
+const inputFirstName = document.querySelector(".parentFirst > input")
 const parentLast = document.querySelector(".parentLast")
+const inputLastName = document.querySelector(".parentLast > input")
 const parentEmail = document.querySelector(".parentEmail")
+const inputEmail = document.querySelector(".parentEmail > input")
 const parentBirthdate = document.querySelector(".parentBirthdate")
+const inputBirthdate = document.querySelector(".parentBirthdate > input")
 const parentQuantity = document.querySelector(".parentQuantity")
+const inputQuantity = document.querySelector(".parentQuantity > input")
 const parentLocation = document.querySelector(".parentLocation")
 const parentConditions = document.querySelector(".parentConditions")
 
@@ -51,16 +57,27 @@ const validationConditions = document.createElement("p")
 validationConditions.innerText = "Vous devez vérifier que vous acceptez les termes et conditions."
 parentConditions.appendChild(validationConditions);
 
-function showValidationMessage(validationElement) {
-  validationElement.className = "formData__validation"
-  validationElement.style.display = "block"
-}
-function hideValidationMessage(validationElement) {
-  validationElement.className = ""
-  validationElement.style.display = "none"
+// create thanks validation modal
+const closeButton = document.createElement("button")
+closeButton.innerText = "Fermer"
+closeButton.className = "btn-submit flex-end"
+closeButton.style.display = "none"
+modalBody.appendChild(closeButton);
+
+function showConfirmationMessage() {
+  modalBody.style.display = "flex"
+  form.style.display = "none"
+  closeButton.style.display = "block"
 }
 
-function editNav() {
+function hideConfirmationMessage() {
+  modalBody.style.display = "block"
+  closeButton.style.display = "none"
+  form.style.display = "block"
+}
+
+// open dropdown
+function openDropdown() {
   const navbar = document.querySelector(".navbar");
   if (navbar.className === "navbar") {
     navbar.className += " responsive";
@@ -69,76 +86,120 @@ function editNav() {
   }
 }
 
-function isFirstNameValid(firstName) {
+function showValidationMessage(validationElement) {
+  validationElement.className = "formData__validation"
+  validationElement.style.display = "block"
+}
+
+function hideValidationMessage(validationElement) {
+  validationElement.className = ""
+  validationElement.style.display = "none"
+}
+
+function redInputWhenErrors(parentElement) {
+  parentElement.className += " text-control--error"
+}
+
+function neutralInputWhenNoErrors(parentElement) {
+  parentElement.className = "text-control"
+}
+
+
+function isFirstNameValid(firstName, input) {
   if (!firstName || !nameRegex.test(firstName)) {
     showValidationMessage(validationFirstName);
+    redInputWhenErrors(input)
+    return false
   } else {
     hideValidationMessage(validationFirstName)
+    neutralInputWhenNoErrors(input)
+    return true
   }
 }
 
-function isLastNameValid(lastName) {
+function isLastNameValid(lastName, input) {
   if (!lastName || !nameRegex.test(lastName)) {
     showValidationMessage(validationLastName);
+    redInputWhenErrors(input)
+    return false
   } else {
     hideValidationMessage(validationLastName)
+    neutralInputWhenNoErrors(input)
+    return true
   }
 }
 
-function isEmailValid(email) {
+function isEmailValid(email, input) {
   if (!email || !emailRegex.test(email)) {
     showValidationMessage(validationEmail);
+    redInputWhenErrors(input)
+    return false
   } else {
     hideValidationMessage(validationEmail);
+    neutralInputWhenNoErrors(input)
+    return true
   }
 }
 
-function isBirthdateValid(birthdate) {
+function isBirthdateValid(birthdate, input) {
   if (!birthdate) {
     showValidationMessage(validationBirthdate);
+    redInputWhenErrors(input)
+    return false
   }
   else {
     hideValidationMessage(validationBirthdate);
+    neutralInputWhenNoErrors(input)
+    return true
   }
 }
 
-function isQuantityValid(quantity) {
-  if ((quantity !== 0) && (quantity > 99)) {
+function isQuantityValid(quantity, input) {
+  const numberQuantity = parseInt(quantity)
+  if (!numberQuantity || numberQuantity < 0 || numberQuantity > 99) {
     showValidationMessage(validationQuantity);
+    redInputWhenErrors(input)
+    return false
   }
   else {
     hideValidationMessage(validationQuantity);
+    neutralInputWhenNoErrors(input)
+    return true
   }
 }
 
 function isLocationValid(location) {
   if (!location) {
     showValidationMessage(validationLocation)
+    return false
   } else {
     hideValidationMessage(validationLocation)
+    return true
   }
 }
 
 function AreConditionsAccepted(accepted) {
   if (!accepted) {
     showValidationMessage(validationConditions)
+    return false
   } else {
     hideValidationMessage(validationConditions)
+    return true
   }
 }
 
 function checkEachInputOnChange(input) {
 
   if (input.id === "first") {
-    isFirstNameValid(input.value)
+    isFirstNameValid(input.value, input)
   } else if (input.id === "last") {
-    isLastNameValid(input.value)
+    isLastNameValid(input.value, input)
   } else if (input.id === "email") {
-    isEmailValid(input.value)
+    isEmailValid(input.value, input)
   } else if (input.id === "birthdate") {
-    isBirthdateValid(input.value)
+    isBirthdateValid(input.value, input)
   } else if (input.id === "quantity") {
-    isQuantityValid(input.value)
+    isQuantityValid(input.value, input)
   }
 
 }
@@ -153,35 +214,26 @@ function validateOnChange(inputSelector) {
   })
 }
 
-
-// validation on submit
-function validateOnSubmit(event) {
-
+function getDataFromForm() { 
   const formObject = {};
   const formData = new FormData(form);
   for (let key of formData.keys()) {
     formObject[key] = formData.get(key);
   }
-  console.log({ formObject })
+  return formObject
+}
 
-  isFirstNameValid(formObject.first)
-  isLastNameValid(formObject.last)
-  isEmailValid(formObject.email)
-  isBirthdateValid(formObject.birthdate)
-  isQuantityValid(formObject.quantity)
-  isLocationValid(formObject.location)
-  AreConditionsAccepted(formObject.conditions)
+// validation on submit
+function isValidOnSubmit() {
+  const dataFromForm = getDataFromForm()
 
-  if (!(event.target.querySelector('input[type="radio"]').checked)) {
-    showValidationMessage(validationLocation);
-  } else {
-    hideValidationMessage(validationLocation);
-  }
-  if (!(event.target.querySelector("#conditions").checked)) {
-    showValidationMessage(validationConditions);
-  } else {
-    hideValidationMessage(validationConditions);
-  }
+  return isFirstNameValid(dataFromForm.first, inputFirstName) &&
+  isLastNameValid(dataFromForm.last, inputLastName) &&
+  isEmailValid(dataFromForm.email, inputEmail) &&
+  isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
+  isQuantityValid(dataFromForm.quantity, inputQuantity) &&
+  isLocationValid(dataFromForm.location) &&
+  AreConditionsAccepted(dataFromForm.conditions)
 }
 
 // function for suscribe form
@@ -189,23 +241,23 @@ function sendSubscription() {
   const subscribeForm = document.querySelector("#reserveForm")
   subscribeForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    validateOnSubmit(event)
 
-    // Creation of subscription object
-    const subscription = {
-      firstName: event.target.querySelector("#first").value,
-      lastName: event.target.querySelector("#last").value,
-      email: event.target.querySelector("#email").value,
-      birthdate: new Date(event.target.querySelector("#birthdate").value),
-      quantity: parseInt(event.target.querySelector("#quantity").value),
-      location: event.target.querySelector("input[name='location']:checked").value,
-      conditions: event.target.querySelector("#conditions").checked,
-      newsletter: event.target.querySelector("#newsletter").checked,
+    if (isValidOnSubmit()) {
+      // Creation of subscription object
+      const subscription = {
+        firstName: event.target.querySelector("#first").value,
+        lastName: event.target.querySelector("#last").value,
+        email: event.target.querySelector("#email").value,
+        birthdate: new Date(event.target.querySelector("#birthdate").value),
+        quantity: parseInt(event.target.querySelector("#quantity").value),
+        location: event.target.querySelector("input[name='location']:checked").value,
+        conditions: event.target.querySelector("#conditions").checked,
+        newsletter: event.target.querySelector("#newsletter").checked,
+      }
+      showConfirmationMessage()
+      console.log({subscription})
+      return subscription
     }
-    return console.log({ subscription })
-    alert("Merci ! Votre réservation a été reçue.");
-    return subscription
-
   })
 }
 
@@ -223,6 +275,7 @@ function closeModal() {
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // close modal event
 modalClose.forEach((btn) => btn.addEventListener("click", closeModal));
+closeButton.addEventListener("click", closeModal);
 
 // launch validations on change event
 firstName.addEventListener("change", validateOnChange("#first"))
