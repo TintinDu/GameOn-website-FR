@@ -344,7 +344,7 @@ input[data-error]::after {
 }
 
 .btn-submit {
-  margin: 0 auto;
+  margin: 2em auto;
 }
 
 .thanksMessage {
@@ -449,9 +449,6 @@ input[data-error]::after {
   font-size: 0.8rem;
   font-weight: 300;
 }
-/* .hero-img {
-  width: 90%;
-} */
 
 .hero-img img {
   border-radius: 10px;
@@ -476,10 +473,23 @@ input[data-error]::after {
 
   text-align: center;
 }
+
+@media (min-width: 768px) {
+  .formData {
+    margin: 0.1em 0;
+  }
+  .modal-body {
+    min-height: 77vh;
+  }
+
+  .bground {
+    background-color: rgba(26, 39, 156, 0.4);
+  }
+}
+
 @media (min-width: 1024px) {
   main {
-    /* margin-top: 0; */
-    margin: 1em;
+    margin: 0 1em;
   }
 
   .navbar {
@@ -516,8 +526,8 @@ input[data-error]::after {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 2px 7px 2px rgba(0, 0, 0, 0.2);
-    max-width: 90%;
     margin: 3em auto;
+    align-items: inherit;
   }
   .hero-content {
     display: flex;
@@ -565,7 +575,7 @@ input[data-error]::after {
   .hero-img img {
     width: 100%;
     height: 100%;
-    padding-left: 2em;
+    padding-left: 3.5em;
     object-fit: fill;
     margin: 0;
     border-radius: 0 10px 10px 0;
@@ -575,29 +585,19 @@ input[data-error]::after {
     font-weight: normal;
     font-size: 1rem;
     align-self: flex-start;
+    margin-left: 1.5em;
   }
   .hero-section > .btn-signup {
     display: none;
   }
   .hero-content > .btn-signup {
     display: block;
-  }
-
-  .modal-body {
-    min-height: 77vh;
-  }
-
-  .bground {
-    background-color: rgba(26, 39, 156, 0.4);
+    margin-left: 1.5em;
   }
 
   footer {
     display: flex;
-    margin: 1em;
   }
-}
-
-@media (min-width: 768px) {
 }
 
 @keyframes modalopen {
