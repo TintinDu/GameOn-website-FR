@@ -273,6 +273,7 @@ function sendSubscription() {
       }
       showConfirmationMessage()
       console.log({ subscription })
+      document.querySelector("#reserveForm").reset();
       return subscription
     }
   })
