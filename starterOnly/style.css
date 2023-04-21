@@ -39,9 +39,11 @@ body {
 .navbar.responsive .navbar__link {
   display: flex;
   right: 10px;
+  margin-left: -150px;
+  height: 40px;
 }
 .navbar__wrapper {
-  margin-right: 0.5em;
+  margin-right: 1em;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -70,6 +72,7 @@ body {
   color: #ffffff;
   border-radius: 15px;
   text-decoration: underline;
+  text-underline-offset: 5px;
 }
 
 .navbar__link.active {
@@ -485,6 +488,7 @@ input {
     justify-content: flex-end;
     position: relative;
     left: 0;
+    height: 50px;
   }
 
   .navbar__dropdown {
