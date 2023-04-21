@@ -28,7 +28,7 @@ const parentConditions = document.querySelector(".parentConditions")
 const nameRegex = new RegExp("[a-zA-ZÀ-ÖØ-öø-ÿ-]{2,15}");
 const emailRegex = new RegExp("[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,13}");
 
-// create validations elements
+// create form validations message for each input
 const validationFirstName = document.createElement("p")
 validationFirstName.innerText = "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
 parentFirst.appendChild(validationFirstName);
@@ -64,12 +64,14 @@ thanksMessage.className = "thanksMessage"
 thanksMessage.style.display = "none"
 modalBody.appendChild(thanksMessage);
 
+// create close button for thanks validation message
 const closeButton = document.createElement("button")
 closeButton.innerText = "Fermer"
 closeButton.className = "btn-submit"
 closeButton.style.display = "none"
 modalBody.appendChild(closeButton);
 
+// show confirmation message after subscription's sending  
 function showConfirmationMessage() {
   modalBody.className += " modal-body--thanks"
   form.style.display = "none"
@@ -77,6 +79,7 @@ function showConfirmationMessage() {
   thanksMessage.style.display = "block"
 }
 
+// close confirmation message after  
 function hideConfirmationMessage() {
   modalBody.className = "modal-body"
   form.style.display = "block"
@@ -94,25 +97,29 @@ function openDropdown() {
   }
 }
 
+// Show error message
 function showValidationMessage(validationElement) {
   validationElement.className = "formData__validation"
-  validationElement.style.display = "block"
+  validationElement.style.display = "flex"
 }
 
+// Hide error message
 function hideValidationMessage(validationElement) {
   validationElement.className = ""
   validationElement.style.display = "none"
 }
 
+// change border to red when error
 function redInputWhenErrors(parentElement) {
   parentElement.className += " text-control--error"
 }
 
+// change border to neutral when error
 function neutralInputWhenNoErrors(parentElement) {
   parentElement.className = "text-control"
 }
 
-
+// is*****Valid functions all return a boolean depending if the condition is fulfilled
 function isFirstNameValid(firstName, input) {
   if (!firstName || !nameRegex.test(firstName)) {
     showValidationMessage(validationFirstName);
@@ -196,6 +203,7 @@ function AreConditionsAccepted(accepted) {
   }
 }
 
+// mapping for checking each input
 function checkEachInputOnChange(input) {
 
   if (input.id === "first") {
@@ -222,7 +230,8 @@ function validateOnChange(inputSelector) {
   })
 }
 
-function getDataFromForm() { 
+// Store Data of the form into an object
+function getDataFromForm() {
   const formObject = {};
   const formData = new FormData(form);
   for (let key of formData.keys()) {
@@ -236,12 +245,12 @@ function isValidOnSubmit() {
   const dataFromForm = getDataFromForm()
 
   return isFirstNameValid(dataFromForm.first, inputFirstName) &&
-  isLastNameValid(dataFromForm.last, inputLastName) &&
-  isEmailValid(dataFromForm.email, inputEmail) &&
-  isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
-  isQuantityValid(dataFromForm.quantity, inputQuantity) &&
-  isLocationValid(dataFromForm.location) &&
-  AreConditionsAccepted(dataFromForm.conditions)
+    isLastNameValid(dataFromForm.last, inputLastName) &&
+    isEmailValid(dataFromForm.email, inputEmail) &&
+    isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
+    isQuantityValid(dataFromForm.quantity, inputQuantity) &&
+    isLocationValid(dataFromForm.location) &&
+    AreConditionsAccepted(dataFromForm.conditions)
 }
 
 // function for suscribe form
@@ -263,7 +272,7 @@ function sendSubscription() {
         newsletter: event.target.querySelector("#newsletter").checked,
       }
       showConfirmationMessage()
-      console.log({subscription})
+      console.log({ subscription })
       return subscription
     }
   })
@@ -277,6 +286,7 @@ function launchModal() {
 // close modal form
 function closeModal() {
   modalbg.style.display = "none";
+  hideConfirmationMessage()
 }
 
 // launch modal event
@@ -294,5 +304,3 @@ quantity.addEventListener("change", validateOnChange("#quantity"))
 
 // launch subscription event
 submitBtn.addEventListener("click", sendSubscription())
-
-// TODO: CSS Mobile + desktop
