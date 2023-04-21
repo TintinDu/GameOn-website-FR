@@ -41,7 +41,16 @@ body {
   right: 10px;
   margin-left: -150px;
   height: 40px;
+  border-radius: 15px;
+  color: #ffffff;
+  background-color: #ff0000;
+  opacity: 0.9;
 }
+
+.navbar.responsive .navbar__link:hover {
+  opacity: 1;
+}
+
 .navbar__wrapper {
   margin-right: 1em;
   display: flex;
