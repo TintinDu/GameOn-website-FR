@@ -96,7 +96,7 @@ function openDropdown() {
 
 function showValidationMessage(validationElement) {
   validationElement.className = "formData__validation"
-  validationElement.style.display = "block"
+  validationElement.style.display = "flex"
 }
 
 function hideValidationMessage(validationElement) {
@@ -222,7 +222,7 @@ function validateOnChange(inputSelector) {
   })
 }
 
-function getDataFromForm() { 
+function getDataFromForm() {
   const formObject = {};
   const formData = new FormData(form);
   for (let key of formData.keys()) {
@@ -236,12 +236,12 @@ function isValidOnSubmit() {
   const dataFromForm = getDataFromForm()
 
   return isFirstNameValid(dataFromForm.first, inputFirstName) &&
-  isLastNameValid(dataFromForm.last, inputLastName) &&
-  isEmailValid(dataFromForm.email, inputEmail) &&
-  isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
-  isQuantityValid(dataFromForm.quantity, inputQuantity) &&
-  isLocationValid(dataFromForm.location) &&
-  AreConditionsAccepted(dataFromForm.conditions)
+    isLastNameValid(dataFromForm.last, inputLastName) &&
+    isEmailValid(dataFromForm.email, inputEmail) &&
+    isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
+    isQuantityValid(dataFromForm.quantity, inputQuantity) &&
+    isLocationValid(dataFromForm.location) &&
+    AreConditionsAccepted(dataFromForm.conditions)
 }
 
 // function for suscribe form
@@ -263,7 +263,7 @@ function sendSubscription() {
         newsletter: event.target.querySelector("#newsletter").checked,
       }
       showConfirmationMessage()
-      console.log({subscription})
+      console.log({ subscription })
       return subscription
     }
   })
