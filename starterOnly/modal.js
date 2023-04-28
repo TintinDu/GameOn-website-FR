@@ -28,6 +28,7 @@ const parentConditions = document.querySelector(".parentConditions")
 const nameRegex = new RegExp("[a-zA-ZÀ-ÖØ-öø-ÿ-]{2,15}");
 const emailRegex = new RegExp("[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,13}");
 
+
 // create form validations message for each input
 const validationFirstName = document.createElement("p")
 validationFirstName.innerText = "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
@@ -145,6 +146,7 @@ function isLastNameValid(lastName, input) {
 }
 
 function isEmailValid(email, input) {
+  console.log({ email })
   if (!email || !emailRegex.test(email)) {
     showValidationMessage(validationEmail);
     redInputWhenErrors(input)
@@ -240,17 +242,20 @@ function getDataFromForm() {
   return formObject
 }
 
+
 // validation on submit
 function isValidOnSubmit() {
   const dataFromForm = getDataFromForm()
 
-  return isFirstNameValid(dataFromForm.first, inputFirstName) &&
+  const areAllInputsValidOnSubmit = isFirstNameValid(dataFromForm.first, inputFirstName) &&
     isLastNameValid(dataFromForm.last, inputLastName) &&
     isEmailValid(dataFromForm.email, inputEmail) &&
     isBirthdateValid(dataFromForm.birthdate, inputBirthdate) &&
     isQuantityValid(dataFromForm.quantity, inputQuantity) &&
     isLocationValid(dataFromForm.location) &&
     AreConditionsAccepted(dataFromForm.conditions)
+
+  return areAllInputsValidOnSubmit
 }
 
 // function for suscribe form
@@ -258,6 +263,8 @@ function sendSubscription() {
   const subscribeForm = document.querySelector("#reserveForm")
   subscribeForm.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    isValidOnSubmit()
 
     if (isValidOnSubmit()) {
       // Creation of subscription object
